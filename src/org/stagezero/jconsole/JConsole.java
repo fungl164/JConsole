@@ -37,8 +37,9 @@ import javax.swing.text.*;
  * ProcessBuilder built primarily so I wouldn't have to leave Netbeans in order
  * to play with Rails on the Windows platform.
  *
- * JConsole simply forks a system process via ProcessBuilder and handles IO via
- * SwingWorker without using or starting any additional threads. Enjoy!!! :)
+ * JConsole can be used as an embedded or standalone command prompt.  It simply 
+ * forks a system process via ProcessBuilder and handles I/O via SwingWorker 
+ * without using or starting any additional threads. Enjoy!!! :)
  *
  * -- History ------------------------------------- 
  * v0.1 
@@ -83,11 +84,6 @@ public class JConsole {
         prev = last - 1;
     }
 
-    public void close() {
-        processor.close();
-        displayArea.clear();
-    }
-
     public String getCurrentCommand() {
         return history[last];
     }
@@ -100,6 +96,11 @@ public class JConsole {
     public String getNextCommand() {
         if (prev + 1 >= last) { return ""; }
         return history[++prev];
+    }
+
+    public void close() {
+        processor.close();
+        displayArea.clear();
     }
 
     public static void main(String[] args) throws IOException {
