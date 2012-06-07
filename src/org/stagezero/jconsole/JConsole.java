@@ -34,8 +34,8 @@ import javax.swing.text.*;
  * JConsole - A Java Console application -------------------------------------
  *
  * This is a general purpose system console app using SwingWorker and
- * ProcessBuilder built primarily so I wouldn't have to leave Netbeans in order
- * to play with Rails on the Windows platform.
+ * ProcessBuilder.  I built primarily so I wouldn't have to leave Netbeans in 
+ * order to play with Rails on the Windows platform.
  *
  * JConsole can be used as an embedded or standalone command prompt.  It simply 
  * forks a system process via ProcessBuilder and handles I/O via SwingWorker 
@@ -43,10 +43,11 @@ import javax.swing.text.*;
  *
  * -- History ------------------------------------- 
  * v0.1 
+ * - Added output display size limits to help with memory consumption
  * - Added commandline history. Use UP/DOWN arrow keys.
  * - Created as Netbeans Module.
- * - Added output display size limits to help with memory consumption
  *
+ * 
  * -- Notes --------------------------------------- 
  * v0.1 
  * - Not tested on OSX or Linux. 
