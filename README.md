@@ -15,12 +15,12 @@ SwingWorker without using or starting any additional threads.
 Enjoy!!! :)
 
 -- History -------------------------------------
- v0.1 
+ - v0.1 
   - Added commandline history. Use UP/DOWN arrow keys. 
   - Created as Netbeans Module.
 
 -- Notes ---------------------------------------
- v0.1
+ - v0.1
   - Not tested on OSX or Linux. 
   - Currently uses cmd.exe as shell (see CmdLineProcessor class below) 
   - Does not yet handle CNTRL+Z events to kill runaway scripts
