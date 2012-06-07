@@ -30,4 +30,4 @@ Enjoy!!! :)
 Feel free to send feedback and/or contribute...
 
 
-@author Luis Fung <fungl164@hotmail.com> - 06/06/2012
+@author Luis Fung - 06/06/2012
