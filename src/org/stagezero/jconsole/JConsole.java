@@ -1,19 +1,19 @@
 /**
- * 
+ *
  * Copyright 2012 Luis Fung <fungl164@hotmail.com>
- * 
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- * 
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License"); you may not
+ * use this file except in compliance with the License. You may obtain a copy of
+ * the License at
+ *
  * http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- * 
+ * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+ * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+ * License for the specific language governing permissions and limitations under
+ * the License.
+ *
  */
 package org.stagezero.jconsole;
 
@@ -40,16 +40,17 @@ import javax.swing.text.*;
  * JConsole simply forks a system process via ProcessBuilder and handles IO via
  * SwingWorker without using or starting any additional threads. Enjoy!!! :)
  *
- * -- History -------------------------------------
+ * -- History ------------------------------------- 
  * v0.1 
- *  - Added commandline history. Use UP/DOWN arrow keys. 
- *  - Created as Netbeans Module.
+ * - Added commandline history. Use UP/DOWN arrow keys.
+ * - Created as Netbeans Module.
+ * - Added output display size limits to help with memory consumption
  *
- * -- Notes ---------------------------------------
- * v0.1
- *  - Not tested on OSX or Linux. 
- *  - Currently uses cmd.exe as shell (see CmdLineProcessor class below) 
- *  - Does not yet handle CNTRL+Z events to kill runaway scripts
+ * -- Notes --------------------------------------- 
+ * v0.1 
+ * - Not tested on OSX or Linux. 
+ * - Currently uses cmd.exe as shell (see CmdLineProcessor class below) 
+ * - Does not yet handle CNTRL+Z events to kill runaway scripts
  *
  *
  * @author Luis Fung <fungl164@hotmail.com> - 06/06/2012
@@ -61,7 +62,7 @@ public class JConsole {
     
     private CmdLineProcessor processor;
     private ConsoleDisplay displayArea;
-    private  String[] history;
+    private String[] history;
     int last, prev;
 
     public JConsole(JTextComponent display) throws IOException {
@@ -76,7 +77,7 @@ public class JConsole {
             return;
         }
         processor.execute(command);
-        
+
         history[last] = command;
         last = (last + 1) % MAX_HISTORY;
         prev = last - 1;
@@ -219,13 +220,14 @@ class ForkedProcess extends SwingWorker<Void, String> implements ChildProcess {
     }
 }
 
-
 class ConsoleDisplay implements ConsoleView {
 
+    private static int MAX_DOC_LENGTH = 8192;
+    
     private JTextComponent display;
     private Document doc;
     private Map<Action, ActionListener> actionkeymapper;
-
+    
     int promptOffset, tempOffset;
     boolean executing;
 
@@ -343,11 +345,11 @@ class ConsoleDisplay implements ConsoleView {
     /**
      * JTextComponent Helper Methods
      */
-    public void clear(){
+    public void clear() {
         display.setText("");
         promptOffset = tempOffset = 0;
     }
-    
+
     public void update(final String text) {
         appendText(text);
     }
@@ -360,6 +362,10 @@ class ConsoleDisplay implements ConsoleView {
 
                 try {
                     synchronized (doc) {
+                        if (doc.getLength() > MAX_DOC_LENGTH) { // Remove ~10% of total from the beginning to make room for new stuff                                                       
+                            removeText(0, doc.getLength() - MAX_DOC_LENGTH + (MAX_DOC_LENGTH / 8));
+                        }
+                        
                         doc.insertString(doc.getLength(), str, null);
                         promptOffset = doc.getLength();
                     }
