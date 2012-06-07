@@ -24,6 +24,10 @@ Enjoy!!! :)
   - Not tested on OSX or Linux. 
   - Currently uses cmd.exe as shell (see CmdLineProcessor class below) 
   - Does not yet handle CNTRL+Z events to kill runaway scripts
+  - Probably has some bugs, so
+
+
+Feel free to contribute...
 
 
 @author Luis Fung <fungl164@hotmail.com> - 06/06/2012
