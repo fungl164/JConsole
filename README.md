@@ -27,7 +27,7 @@ Enjoy!!! :)
   - Probably has some bugs, so
 
 
-Feel free to contribute...
+Feel free to send feedback and/or contribute...
 
 
 @author Luis Fung <fungl164@hotmail.com> - 06/06/2012
