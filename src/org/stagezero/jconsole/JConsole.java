@@ -312,36 +312,32 @@ class ConsoleDisplay implements ConsoleView {
      */
     @Override
     public void started(Process process) {
-        System.out.println("STARTED.");
+        //System.out.println("STARTED.");
     }
 
     @Override
     public void aborted(Process process, String line) {
-        System.out.println("ABORTED.");
+        //System.out.println("ABORTED.");
     }
 
     @Override
     public void stdout(Process process, String line) {
-        // FIX ME!!!   Nasty Hack: looking for dir struct (e.g. "C:\path\project>")
-//        if (line.startsWith(":\\", 1) && line.endsWith(">")) {
-//            System.err.println("Ready to get input");
-//        }
         update(line);
     }
 
     @Override
     public void stderr(Process process, String line) {
-        System.out.println(line);
+        //System.out.println(line);
     }
 
     @Override
     public void ended(Process process, int value) {
-        System.out.println("EXITED: (" + value + ")");
+        //System.out.println("EXITED: (" + value + ")");
     }
 
     @Override
     public void error(Process process, Throwable th) {
-        System.out.println("ERROR: " + th.getCause());
+        //System.out.println("ERROR: " + th.getCause());
     }
 
     /**
@@ -365,9 +361,7 @@ class ConsoleDisplay implements ConsoleView {
                 try {
                     synchronized (doc) {
                         doc.insertString(doc.getLength(), str, null);
-                        //doc.insertString(doc.getLength(), "\n", null);
                         promptOffset = doc.getLength();
-                        //System.err.println("OFFSET: " + promptOffset);
                     }
                 } catch (BadLocationException e) {
                     throw new RuntimeException(e);
@@ -392,7 +386,6 @@ class ConsoleDisplay implements ConsoleView {
         try {
             synchronized (doc) {
                 String cmd = doc.getText(promptOffset, doc.getLength() - promptOffset);
-                System.err.println("CMD: " + cmd);
                 return cmd;
             }
         } catch (BadLocationException e) {
