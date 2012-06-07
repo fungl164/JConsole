@@ -34,25 +34,21 @@ import javax.swing.text.*;
  * JConsole - A Java Console application -------------------------------------
  *
  * This is a general purpose system console app using SwingWorker and
- * ProcessBuilder.  I built it primarily so I wouldn't have to leave Netbeans 
- * in order to play with Rails (RoR) on the Windows platform.
+ * ProcessBuilder. I built it primarily so I wouldn't have to leave Netbeans in
+ * order to play with Rails (RoR) on the Windows platform.
  *
- * JConsole can be used as an embedded or standalone command prompt.  It simply 
- * forks a system process via ProcessBuilder and handles I/O via SwingWorker 
+ * JConsole can be used as an embedded or standalone command prompt. It simply
+ * forks a system process via ProcessBuilder and handles I/O via SwingWorker
  * without using or starting any additional threads. Enjoy!!! :)
  *
- * -- History ------------------------------------- 
- * v0.1 
- * - Added output display size limits to help with memory consumption
- * - Added commandline history. Use UP/DOWN arrow keys.
- * - Created as Netbeans Module.
+ * -- History ------------------------------------- v0.1 - Added output display
+ * size limits to help with memory consumption - Added commandline history. Use
+ * UP/DOWN arrow keys. - Created as Netbeans Module.
  *
- * 
- * -- Notes --------------------------------------- 
- * v0.1 
- * - Not tested on OSX or Linux. 
- * - Currently uses cmd.exe as shell (see CmdLineProcessor class below) 
- * - Does not yet handle CNTRL+Z events to kill runaway scripts
+ *
+ * -- Notes --------------------------------------- v0.1 - Not tested on OSX or
+ * Linux. - Currently uses cmd.exe as shell (see CmdLineProcessor class below) -
+ * Does not yet handle CNTRL+Z events to kill runaway scripts
  *
  *
  * @author Luis Fung <fungl164@hotmail.com> - 06/06/2012
@@ -61,7 +57,6 @@ import javax.swing.text.*;
 public class JConsole {
 
     static final int MAX_HISTORY = 20;
-    
     private CmdLineProcessor processor;
     private ConsoleDisplay displayArea;
     private String[] history;
@@ -90,12 +85,16 @@ public class JConsole {
     }
 
     public String getPreviousCommand() {
-        if (prev < 0) { return ""; }
+        if (prev < 0) {
+            return "";
+        }
         return history[prev--];
     }
 
     public String getNextCommand() {
-        if (prev + 1 >= last) { return ""; }
+        if (prev + 1 >= last) {
+            return "";
+        }
         return history[++prev];
     }
 
@@ -120,14 +119,16 @@ public class JConsole {
 class CmdLineProcessor implements CommandProcessor {
 
     public static final String SHELL = "cmd", PARAMS = "/k";
-    
-    private ProcessBuilder builder = new ProcessBuilder(SHELL, PARAMS);
+    private ProcessBuilder builder;
     private ForkedProcess proc;
     private ConsoleView view;
 
     public CmdLineProcessor(JConsole c, ConsoleView h) throws IOException {
-        builder.redirectErrorStream(true);
         view = h;
+
+        builder = new ProcessBuilder(SHELL, PARAMS);
+        builder.redirectErrorStream(true);
+
         proc = new ForkedProcess(builder.start(), view);
         proc.execute();
     }
@@ -225,11 +226,9 @@ class ForkedProcess extends SwingWorker<Void, String> implements ChildProcess {
 class ConsoleDisplay implements ConsoleView {
 
     private static int MAX_DOC_LENGTH = 8192;
-    
     private JTextComponent display;
     private Document doc;
     private Map<Action, ActionListener> actionkeymapper;
-    
     int promptOffset, tempOffset;
     boolean executing;
 
@@ -367,7 +366,7 @@ class ConsoleDisplay implements ConsoleView {
                         if (doc.getLength() > MAX_DOC_LENGTH) { // Remove ~10% of total from the beginning to make room for new stuff                                                       
                             removeText(0, doc.getLength() - MAX_DOC_LENGTH + (MAX_DOC_LENGTH / 8));
                         }
-                        
+
                         doc.insertString(doc.getLength(), str, null);
                         promptOffset = doc.getLength();
                     }
