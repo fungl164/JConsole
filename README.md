@@ -19,7 +19,7 @@ Enjoy!!! :)
   - Added commandline history. Use UP/DOWN arrow keys. 
   - Created as Netbeans Module.
 
- -- Notes ---------------------------------------
+-- Notes ---------------------------------------
  v0.1
   - Not tested on OSX or Linux. 
   - Currently uses cmd.exe as shell (see CmdLineProcessor class below) 
