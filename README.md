@@ -1,4 +1,4 @@
-JConsole - A Java Console application
+# JConsole - A Java Console application
 -------------------------------------
 
 This is a general purpose system console app built primarily so I wouldn't 
@@ -12,14 +12,14 @@ extended to use other shells (e.g. /bin/bash).
  
 Enjoy!!! :)
 
--- History 
+## History 
 
  v0.1 - 06/06/2012
  - Added output display size limits to help with memory consumption
  - Added commandline history. Use UP/DOWN arrow keys. 
  - Created as Netbeans Module.
 
--- Notes 
+## Notes 
 
 v0.1 - 06/06/2012
 - Not tested on OSX or Linux. 
@@ -32,3 +32,7 @@ Feel free to send feedback and/or contribute...
 
 
 @author Luis Fung - 06/06/2012
+
+Architecture
+-------------------------------------
+![JConsole Architecture](https://github.com/fungl164/JConsole/blob/master/Arch%20Diagram.png?raw=true "JConsole Architecture")
