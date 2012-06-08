@@ -1,30 +1,31 @@
-JConsole
-========
+JConsole - A Java Console application
+-------------------------------------
 
-A Java Command Prompt - use it to work with Rails inside Netbeans and Windows
+This is a general purpose system console app built primarily so I wouldn't 
+have to leave Netbeans in order to play with Ruby on Rails (RoR) on the Windows platform.
 
-This is a general purpose system console app using SwingWorker and
-ProcessBuilder.
+JConsole can be used as an embedded or standalone command prompt (e.g. cmd.exe)
 
-Built primarily so I wouldn't have to leave Netbeans in order
-to play with Rails on the Windows platform.
-
-JConsole simply forks a system process via ProcessBuilder and handles IO via
-SwingWorker without using or starting any additional threads. 
+It simply forks a system process via ProcessBuilder and handles I/O via
+SwingWorker without using or starting any additional threads. It can also be
+extended to use other shells (e.g. /bin/bash).
  
 Enjoy!!! :)
 
--- History -------------------------------------
- - v0.1 
-  - Added commandline history. Use UP/DOWN arrow keys. 
-  - Created as Netbeans Module.
+-- History 
 
--- Notes ---------------------------------------
- - v0.1
-  - Not tested on OSX or Linux. 
-  - Currently uses cmd.exe as shell (see CmdLineProcessor class below) 
-  - Does not yet handle CNTRL+Z events to kill runaway scripts
-  - Probably has some bugs, so
+ v0.1 - 06/06/2012
+ - Added output display size limits to help with memory consumption
+ - Added commandline history. Use UP/DOWN arrow keys. 
+ - Created as Netbeans Module.
+
+-- Notes 
+
+v0.1 - 06/06/2012
+- Not tested on OSX or Linux. 
+- Currently uses cmd.exe as shell (see CmdLineProcessor class below) 
+- Does not yet handle CNTRL+Z events to kill runaway scripts
+- Probably has some bugs, so
 
 
 Feel free to send feedback and/or contribute...
