@@ -118,6 +118,7 @@ public class JConsole {
         fr.setVisible(true);
     }
 }
+
 class CmdLineProcessor implements CommandProcessor {
 
     public static final String SHELL = "cmd", PARAMS = "/k";
