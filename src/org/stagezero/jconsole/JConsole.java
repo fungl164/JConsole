@@ -311,7 +311,7 @@ class ConsoleDisplay implements ConsoleView, ProgressListener {
     }
 
     /**
-     * Display Handler Callback Methods
+     * ProgressListener Callback Methods
      */
     @Override
     public void started(Process process) {
@@ -333,6 +333,9 @@ class ConsoleDisplay implements ConsoleView, ProgressListener {
         //System.out.println("ERROR: " + th.getCause());
     }
 
+    /**
+     * ConsoleView Callback Methods
+     */
     @Override
     public void stdout(Process process, String line) {
         update(line);
