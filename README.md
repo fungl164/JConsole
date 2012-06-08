@@ -14,7 +14,7 @@ It can also be used as a standalone system shell or command prompt **(e.g. cmd.e
 **JConsole** simply forks a system process via **\<ProcessBuilder\>** and handles I/O via a **\<SwingWorker\>** without 
 <br>using or spawning any additional background threads. 
 
-It does not depend on any **external libraries or 3rd party packages** and can be extended to use other shells 
+It does not depend on any **external libraries** or **3rd party packages** and can be extended to use other shells 
 <br>besides cmd.exe **(e.g. /bin/bash)**.
  
 ## History 
