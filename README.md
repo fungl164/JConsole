@@ -12,9 +12,10 @@ scripts, code generators and/or other system/development utilities.
 
 ## How does it work?
 JConsole simply forks a system process via ProcessBuilder and handles I/O via
-SwingWorker without using or starting any additional threads. It does not depend on
-any external libraries or packages and can also be extended to use other shells besides
-cmd.exe (e.g. /bin/bash).
+SwingWorker without using or starting any additional background threads. 
+
+It does not depend on any external libraries or 3rd party packages and can also be 
+extended to use other shells besides cmd.exe (e.g. /bin/bash).
  
 ## History 
 
