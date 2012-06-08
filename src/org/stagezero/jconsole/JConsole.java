@@ -18,10 +18,7 @@
 package org.stagezero.jconsole;
 
 import java.awt.Dimension;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
+import java.awt.event.*;
 import java.io.*;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -61,15 +58,15 @@ public class JConsole implements CommandProcessor {
 
     public JConsole(JTextComponent display) throws IOException {
         view = new ConsoleDisplay(this, display);
-        shell = new CmdLineProcessor(this); 
+        shell = new CmdLineProcessor(this);
         history = new CommandHistory(MAX);
     }
 
     @Override
-    public CommandHistory history(){
+    public CommandHistory history() {
         return history;
     }
-    
+
     public ConsoleDisplay display() {
         return view;
     }
@@ -141,7 +138,7 @@ class CommandHistory {
     }
 }
 
-class CmdLineProcessor  {
+class CmdLineProcessor {
 
     public static final String SHELL = "cmd", PARAMS = "/k";
     private ProcessBuilder builder;
@@ -154,7 +151,7 @@ class CmdLineProcessor  {
         proc = new ForkedProcess(builder.start(), console.progressListener(), console.display());
         proc.execute();
     }
-    
+
     public void execute(String command) throws ExecutionException {
         proc.execute(command);
     }
@@ -261,6 +258,17 @@ class ConsoleDisplay implements ConsoleView, ProgressListener, InputDetector {
         this.actionkeymapper = new HashMap<Action, ActionListener>();
 
         display.setCaret(new BlockCaret());
+        display.addFocusListener(new FocusListener() {
+
+            @Override
+            public void focusGained(FocusEvent e) {
+                display.setCaretPosition(doc.getLength());
+            }
+
+            @Override
+            public void focusLost(FocusEvent e) {
+            }
+        });
         display.addKeyListener(new KeyListener() {
 
             @Override

@@ -15,18 +15,12 @@ import org.openide.util.NbBundle.Messages;
 /**
  * Top component which displays something.
  */
-@ConvertAsProperties(dtd = "-//org.stagezero.jconsole//JConsole//EN",
-autostore = false)
-@TopComponent.Description(preferredID = "JConsoleTopComponent",
-//iconBase="SET/PATH/TO/ICON/HERE", 
-persistenceType = TopComponent.PERSISTENCE_ALWAYS)
+@ConvertAsProperties(dtd = "-//org.stagezero.jconsole//JConsole//EN", autostore = false)
+@TopComponent.Description(preferredID = "JConsoleTopComponent", persistenceType = TopComponent.PERSISTENCE_ALWAYS/*, iconBase="SET/PATH/TO/ICON/HERE",*/ )
 @TopComponent.Registration(mode = "output", openAtStartup = false)
 @ActionID(category = "Window", id = "org.stagezero.jconsole.JConsoleTopComponent")
-@ActionReference(path = "Menu/Window/Output" /*
- * , position = 333
- */)
-@TopComponent.OpenActionRegistration(displayName = "#CTL_JConsoleAction",
-preferredID = "JConsoleTopComponent")
+@ActionReference(path = "Menu/Window/Output", position = 333)
+@TopComponent.OpenActionRegistration(displayName = "#CTL_JConsoleAction", preferredID = "JConsoleTopComponent")
 @Messages({
     "CTL_JConsoleAction=JConsole",
     "CTL_JConsoleTopComponent=JConsole",
