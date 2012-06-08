@@ -2,7 +2,7 @@
 -------------------------------------
 
 This is a general-purpose system console app built primarily so I wouldn't have to leave **Netbeans** in order to 
-<br>play with **NodeJS**, the **Play Framework** or **Ruby on Rails (RoR)** while on the Windows platform.
+<br>play with **NodeJS**, **Ruby on Rails (RoR)** and the **Play Framework** while on the Windows platform.
 
 **JConsole** is very light-weight and can be easily embedded into any app.  
 
