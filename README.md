@@ -11,10 +11,10 @@ scripts, code generators and/or other system/development utilities.
 
 
 ## How does it work?
-JConsole simply forks a system process via **\<ProcessBuilder\>** and handles I/O via a
+**JConsole** simply forks a system process via **\<ProcessBuilder\>** and handles I/O via a
 **\<SwingWorker\>** without using or spawning any additional background threads. 
 
-It does not depend on any external libraries or 3rd party packages and can also be 
+It does not depend on any **external libraries or 3rd party packages** and can be 
 extended to use other shells besides cmd.exe **(e.g. /bin/bash)**.
  
 ## History 
