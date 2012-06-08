@@ -1,21 +1,21 @@
 # JConsole - An ultra light-weight Java console app
 -------------------------------------
 
-This is a general-purpose system console app built primarily so I wouldn't 
-have to leave **Netbeans** in order to play with **Ruby on Rails (RoR)** on the Windows platform.
+This is a general-purpose system console app built primarily so I wouldn't have to leave **Netbeans** in order to 
+<br>play with **Ruby on Rails (RoR)** on the Windows platform.
 
 **JConsole** is very light-weight and can be easily embedded into any app.  
 
-It can also be used as a standalone system shell or command prompt **(e.g. cmd.exe)** for running 
-scripts, code generators and/or other system/development utilities.
+It can also be used as a standalone system shell or command prompt **(e.g. cmd.exe)** for running scripts, code 
+<br>generators and/or other system/development utilities.
 
 
 ## How does it work?
-**JConsole** simply forks a system process via **\<ProcessBuilder\>** and handles I/O via a
-**\<SwingWorker\>** without using or spawning any additional background threads. 
+**JConsole** simply forks a system process via **\<ProcessBuilder\>** and handles I/O via a **\<SwingWorker\>** without 
+<br>using or spawning any additional background threads. 
 
-It does not depend on any **external libraries or 3rd party packages** and can be 
-extended to use other shells besides cmd.exe **(e.g. /bin/bash)**.
+It does not depend on any **external libraries or 3rd party packages** and can be extended to use other shells 
+<br>besides cmd.exe **(e.g. /bin/bash)**.
  
 ## History 
 
