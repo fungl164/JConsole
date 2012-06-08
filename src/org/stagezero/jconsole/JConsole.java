@@ -32,19 +32,29 @@ import javax.swing.text.Document;
 import javax.swing.text.JTextComponent;
 
 /**
- * JConsole - A Java Console application -------------------------------------
+ * JConsole - An ultra light-weight Java Console application ------------
  *
- * This is a general purpose system console app using SwingWorker and
- * ProcessBuilder. Built primarily so I wouldn't have to leave Netbeans in order
- * to play with Ruby on Rails (RoR) on the Windows platform.
- *
- * JConsole can be used as an embedded or standalone command prompt (e.g.
- * cmd.exe).
- *
- * It simply forks a system process via ProcessBuilder and handles I/O via
- * SwingWorker without using or starting any additional threads. It can also be
- * extended to use other shells. Enjoy!!! :)
- *
+ * This is a general-purpose system console app built primarily so I wouldn't 
+ * have to leave Netbeans in order to play NodeJS, Ruby on Rails (RoR) and the
+ * Play Framework while on the Windows platform.  
+ * 
+ * JConsole is very light-weight and can be easily embedded into any app.
+ * 
+ * It can also be used as a standalone system shell or command prompt 
+ * (e.g. cmd.exe) for running scripts, code generators and/or other system/
+ * development utilities.
+ * 
+ * How does it work?
+ * -----------------
+ * JConsole simply forks a system process via <ProcessBuilder> and handles I/O 
+ * via a <SwingWorker> without using or spawning any additional background 
+ * threads.
+ * 
+ * It does not depend on any external libraries or 3rd party packages and can 
+ * be extended to use other shells besides cmd.exe (e.g. /bin/bash).
+ * 
+ * Enjoy!!! :)
+ * 
  * @author Luis Fung <fungl164@hotmail.com> - 06/06/2012
  *
  */
