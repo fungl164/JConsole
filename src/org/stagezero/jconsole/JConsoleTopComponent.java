@@ -19,7 +19,7 @@ import org.openide.util.NbBundle.Messages;
 @TopComponent.Description(preferredID = "JConsoleTopComponent", persistenceType = TopComponent.PERSISTENCE_ALWAYS/*, iconBase="SET/PATH/TO/ICON/HERE",*/ )
 @TopComponent.Registration(mode = "output", openAtStartup = false)
 @ActionID(category = "Window", id = "org.stagezero.jconsole.JConsoleTopComponent")
-@ActionReference(path = "Menu/Window/Output", position = 333)
+@ActionReference(path = "Menu/Window/Output"/*, position = 333*/)
 @TopComponent.OpenActionRegistration(displayName = "#CTL_JConsoleAction", preferredID = "JConsoleTopComponent")
 @Messages({
     "CTL_JConsoleAction=JConsole",
