@@ -1,10 +1,10 @@
-# JConsole - A Java Console application
+# JConsole - An ultra light-weight Java console
 -------------------------------------
 
-This is a general purpose system console app built primarily so I wouldn't 
+This is a general-purpose system console app built primarily so I wouldn't 
 have to leave Netbeans in order to play with Ruby on Rails (RoR) on the Windows platform.
 
-JConsole can be used as an embedded or standalone command prompt (e.g. cmd.exe)
+JConsole is very light-weight and can be used as an embedded or standalone system command prompt (e.g. cmd.exe)
 
 It simply forks a system process via ProcessBuilder and handles I/O via
 SwingWorker without using or starting any additional threads. It can also be
