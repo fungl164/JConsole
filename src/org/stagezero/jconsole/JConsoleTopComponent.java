@@ -29,7 +29,7 @@ persistenceType = TopComponent.PERSISTENCE_ALWAYS)
 preferredID = "JConsoleTopComponent")
 @Messages({
     "CTL_JConsoleAction=JConsole",
-    "CTL_JConsoleTopComponent=JConsole Window",
+    "CTL_JConsoleTopComponent=JConsole",
     "HINT_JConsoleTopComponent=This is a JConsole window"
 })
 public final class JConsoleTopComponent extends TopComponent {

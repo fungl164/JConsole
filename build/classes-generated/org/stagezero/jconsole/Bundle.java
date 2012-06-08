@@ -10,7 +10,7 @@ class Bundle {
         return org.openide.util.NbBundle.getMessage(Bundle.class, "CTL_JConsoleAction");
     }
     /**
-     * @return <i>JConsole Window</i>
+     * @return <i>JConsole</i>
      * @see JConsoleTopComponent
      */
     static String CTL_JConsoleTopComponent() {
