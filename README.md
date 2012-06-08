@@ -40,3 +40,5 @@ Architecture
 Tools
 -------------------------------------
 Ruby and Rails - Netbeans plugin - http://plugins.netbeans.org/plugin/38549
+
+JConsole - Netbeans plugin - https://github.com/downloads/fungl164/JConsole/org-stagezero-jconsole.nbm
