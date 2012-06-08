@@ -58,7 +58,6 @@ public class JConsole implements CommandProcessor {
     private ConsoleDisplay view;
     private CmdLineProcessor shell;
     private CommandHistory history;
-//    int last, prev;
 
     public JConsole(JTextComponent display) throws IOException {
         view = new ConsoleDisplay(this, display);
@@ -179,7 +178,6 @@ class ForkedProcess extends SwingWorker<Void, String> implements ChildProcess {
         this.process = proc;
         this.io = listener;
         this.view = view;
-
     }
 
     @Override
