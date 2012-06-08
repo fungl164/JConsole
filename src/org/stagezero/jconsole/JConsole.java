@@ -353,7 +353,7 @@ class ConsoleDisplay implements ConsoleView, ProgressListener, InputDetector {
      */
     @Override
     public void started(Process process) {
-        update("JConsole " + JConsole.VERSION + " - the ultra light System command shell.\nCopyright (c) 2012 stagezero.org. All rights reserved.\n\n");
+        update("JConsole " + JConsole.VERSION + " - System command shell.\nCopyright (c) 2012 stagezero.org. All rights reserved.\n\n");
     }
 
     @Override
