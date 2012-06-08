@@ -226,7 +226,7 @@ class ForkedProcess extends SwingWorker<Void, String> implements ChildProcess {
     }
 }
 
-class ConsoleDisplay implements ConsoleView, ProgressListener {
+class ConsoleDisplay implements ConsoleView, ProgressListener, InputDetector {
 
     private static int MAX_DOC_LENGTH = 8192;
     private JTextComponent display;
@@ -457,6 +457,9 @@ interface ProgressListener {
     public void ended(Process process, int value);
 
     public void error(Process process, Throwable th);
+}
+
+interface InputDetector {    
 }
 
 interface ChildProcess {
