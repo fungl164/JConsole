@@ -2,20 +2,20 @@
 -------------------------------------
 
 This is a general-purpose system console app built primarily so I wouldn't 
-have to leave Netbeans in order to play with Ruby on Rails (RoR) on the Windows platform.
+have to leave **Netbeans** in order to play with **Ruby on Rails (RoR)** on the Windows platform.
 
-JConsole is very light-weight and can be easily embedded into any app.  
+**JConsole** is very light-weight and can be easily embedded into any app.  
 
-It can also be used as a standalone system shell or command prompt (e.g. cmd.exe) for running 
+It can also be used as a standalone system shell or command prompt **(e.g. cmd.exe)** for running 
 scripts, code generators and/or other system/development utilities.
 
 
 ## How does it work?
-JConsole simply forks a system process via ProcessBuilder and handles I/O via
-SwingWorker without using or starting any additional background threads. 
+JConsole simply forks a system process via **\<ProcessBuilder\>** and handles I/O via a
+**\<SwingWorker\>** without using or spawning any additional background threads. 
 
 It does not depend on any external libraries or 3rd party packages and can also be 
-extended to use other shells besides cmd.exe (e.g. /bin/bash).
+extended to use other shells besides cmd.exe **(e.g. /bin/bash)**.
  
 ## History 
 
@@ -27,7 +27,7 @@ extended to use other shells besides cmd.exe (e.g. /bin/bash).
 ## Notes 
 
 v0.1 - 06/06/2012
-- Not tested on OSX or Linux. 
+- Not tested on **OSX** or **Linux**. 
 - Currently uses **cmd.exe** as the default shell
 - Does not yet handle **CNTRL+Z** events to kill runaway scripts
 - Probably has some bugs, so
