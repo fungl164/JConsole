@@ -1,4 +1,4 @@
-# JConsole - An ultra light-weight Java console
+# JConsole - An ultra light-weight Java console app
 -------------------------------------
 
 This is a general-purpose system console app built primarily so I wouldn't 
