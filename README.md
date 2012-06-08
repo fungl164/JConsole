@@ -19,14 +19,14 @@ It does not depend on any **external libraries or 3rd party packages** and can b
  
 ## History 
 
- v0.1 - 06/06/2012
+**v0.1 - 06/06/2012**
  - Added output display size limits to help with memory consumption
  - Added commandline history. Use UP/DOWN arrow keys. 
  - Created as Netbeans Module.
 
 ## Notes 
 
-v0.1 - 06/06/2012
+**v0.1 - 06/06/2012**
 - Not tested on **OSX** or **Linux**. 
 - Currently uses **cmd.exe** as the default shell
 - Does not yet handle **CNTRL+Z** events to kill runaway scripts
