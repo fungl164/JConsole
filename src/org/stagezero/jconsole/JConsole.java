@@ -23,61 +23,55 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.io.*;
-import java.util.*;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
 import java.util.concurrent.ExecutionException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.*;
-import javax.swing.text.*;
+import javax.swing.text.BadLocationException;
+import javax.swing.text.Document;
+import javax.swing.text.JTextComponent;
 
 /**
  * JConsole - A Java Console application -------------------------------------
  *
  * This is a general purpose system console app using SwingWorker and
- * ProcessBuilder. I built it primarily so I wouldn't have to leave Netbeans in
- * order to play with Rails (RoR) on the Windows platform.
+ * ProcessBuilder. Built primarily so I wouldn't have to leave Netbeans in
+ * order to play with Ruby on Rails (RoR) on the Windows platform.
  *
- * JConsole can be used as an embedded or standalone command prompt. It simply
- * forks a system process via ProcessBuilder and handles I/O via SwingWorker
- * without using or starting any additional threads. Enjoy!!! :)
- *
- * -- History ------------------------------------- v0.1 - Added output display
- * size limits to help with memory consumption - Added commandline history. Use
- * UP/DOWN arrow keys. - Created as Netbeans Module.
- *
- *
- * -- Notes --------------------------------------- v0.1 - Not tested on OSX or
- * Linux. - Currently uses cmd.exe as shell (see CmdLineProcessor class below) -
- * Does not yet handle CNTRL+Z events to kill runaway scripts
- *
+ * JConsole can be used as an embedded or standalone command prompt (e.g. cmd.exe). 
+ * 
+ * It simply forks a system process via ProcessBuilder and handles I/O via 
+ * SwingWorker without using or starting any additional threads. It can also be
+ * extended to use other shells. Enjoy!!! :)
  *
  * @author Luis Fung <fungl164@hotmail.com> - 06/06/2012
  *
  */
 public class JConsole {
 
-    static final int MAX_HISTORY = 20;
-    private CmdLineProcessor processor;
-    private ConsoleDisplay displayArea;
+    public static final String VERSION = "v0.1";
+    private static final int MAX = 20;
+    private ConsoleDisplay view;
+    private CmdLineProcessor shell;
     private String[] history;
     int last, prev;
 
     public JConsole(JTextComponent display) throws IOException {
-        displayArea = new ConsoleDisplay(this, display);
-        processor = new CmdLineProcessor(this, displayArea);
-        history = new String[MAX_HISTORY];
+        view = new ConsoleDisplay(this, display);
+        shell = new CmdLineProcessor(this);
+        history = new String[MAX];
         last = 0;
     }
 
-    public void execute(String command) throws ExecutionException {
-        if (command == null) {
-            return;
-        }
-        processor.execute(command);
+    public ConsoleDisplay getDisplay() {
+        return view;
+    }
 
-        history[last] = command;
-        last = (last + 1) % MAX_HISTORY;
-        prev = last - 1;
+    public ProgressListener getProgressListener() {
+        return view;
     }
 
     public String getCurrentCommand() {
@@ -85,29 +79,38 @@ public class JConsole {
     }
 
     public String getPreviousCommand() {
-        if (prev < 0) {
-            return "";
-        }
-        return history[prev--];
+        return history[check(--prev)];
     }
 
     public String getNextCommand() {
-        if (prev + 1 >= last) {
-            return "";
+        return history[check(++prev)];
+    }
+
+    public int check(int prev) {
+        int mod = prev % history.length;
+        return mod < 0 ? mod + history.length : mod;
+    }
+
+    public void execute(String command) throws ExecutionException {
+        if (command == null) {
+            return;
         }
-        return history[++prev];
+        shell.execute(command);
+
+        history[last] = command;
+        last = (last + 1) % MAX;
+        prev = last;
     }
 
     public void close() {
-        processor.close();
-        displayArea.clear();
+        shell.quit();
     }
 
     public static void main(String[] args) throws IOException {
         JTextArea consoleDisplay = new JTextArea();
         JConsole console = new JConsole(consoleDisplay);
 
-        JFrame fr = new JFrame("test");
+        JFrame fr = new JFrame("JConsole [" + VERSION + "]");
         fr.setPreferredSize(new Dimension(640, 480));
         fr.add(new JScrollPane(consoleDisplay));
         //fr.validate();
@@ -115,21 +118,17 @@ public class JConsole {
         fr.setVisible(true);
     }
 }
-
 class CmdLineProcessor implements CommandProcessor {
 
     public static final String SHELL = "cmd", PARAMS = "/k";
     private ProcessBuilder builder;
     private ForkedProcess proc;
-    private ConsoleView view;
 
-    public CmdLineProcessor(JConsole c, ConsoleView h) throws IOException {
-        view = h;
-
+    public CmdLineProcessor(JConsole console) throws IOException {
         builder = new ProcessBuilder(SHELL, PARAMS);
         builder.redirectErrorStream(true);
 
-        proc = new ForkedProcess(builder.start(), view);
+        proc = new ForkedProcess(builder.start(), console.getProgressListener(), console.getDisplay());
         proc.execute();
     }
 
@@ -142,7 +141,7 @@ class CmdLineProcessor implements CommandProcessor {
         proc.cancel(true);
     }
 
-    public void close() {
+    public void quit() {
         proc.cancel(true);
     }
 }
@@ -150,13 +149,15 @@ class CmdLineProcessor implements CommandProcessor {
 class ForkedProcess extends SwingWorker<Void, String> implements ChildProcess {
 
     private Process process;
+    private ProgressListener io;
     private ConsoleView view;
-    private String lastCmd;
     private boolean skip;
 
-    public ForkedProcess(Process proc, ConsoleView disp) throws IOException {
-        this.view = disp;
+    public ForkedProcess(Process proc, ProgressListener listener, ConsoleView view) throws IOException {
         this.process = proc;
+        this.io = listener;
+        this.view = view;
+
     }
 
     @Override
@@ -166,24 +167,24 @@ class ForkedProcess extends SwingWorker<Void, String> implements ChildProcess {
         while (it.hasNext()) {
             String rcvd = it.next();
             if (skip) {
-                // FIX ME!!!  Nasty hack to prevent command from being displayed twice.
+                // FIX ME!!!  Nasty hackety hack to prevent command from being displayed twice.
                 view.stdout(process, "\n");
                 skip = false;
                 continue;
             }
-
             view.stdout(process, rcvd);
         }
     }
 
     @Override
     public Void doInBackground() {
-        InputStream in = null;
-        try {
+        io.started(process);
 
-            in = process.getInputStream();
+        try {
+            InputStream in = process.getInputStream();
             byte[] buffer = new byte[128];
             int len;
+
             while ((len = in.read(buffer, 0, buffer.length)) != -1) {
                 publish(new String(buffer, 0, len));
                 if (isCancelled()) {
@@ -191,13 +192,16 @@ class ForkedProcess extends SwingWorker<Void, String> implements ChildProcess {
                 }
             }
         } catch (Exception e) {
-            view.error(process, e);
-
+            io.error(process, e);
         }
         if (process != null) {
             process.destroy();
         }
         return null;  // Don't care
+    }
+
+    public Process getProcess() {
+        return process;
     }
 
     public void execute(String args) throws ExecutionException {
@@ -206,7 +210,6 @@ class ForkedProcess extends SwingWorker<Void, String> implements ChildProcess {
                 return;
             }
             skip = true;
-            lastCmd = args;
             process.getOutputStream().write(args.getBytes());
             process.getOutputStream().write('\n');
             process.getOutputStream().flush();
@@ -218,12 +221,11 @@ class ForkedProcess extends SwingWorker<Void, String> implements ChildProcess {
     @Override
     protected void done() {
         // Done on the swing event thread
-        view.ended(process, 0);
-
+        io.ended(process, 0);
     }
 }
 
-class ConsoleDisplay implements ConsoleView {
+class ConsoleDisplay implements ConsoleView, ProgressListener {
 
     private static int MAX_DOC_LENGTH = 8192;
     private JTextComponent display;
@@ -305,9 +307,6 @@ class ConsoleDisplay implements ConsoleView {
         //        console.handle(KeyEvent.VK_Z);
         //    }
         //});
-
-
-
     }
 
     /**
@@ -315,12 +314,22 @@ class ConsoleDisplay implements ConsoleView {
      */
     @Override
     public void started(Process process) {
-        //System.out.println("STARTED.");
+        update("JConsole [" + JConsole.VERSION + "]\nCopyright (c) 2012 stagezero.org. All rights reserved.\n\n");
     }
 
     @Override
     public void aborted(Process process, String line) {
         //System.out.println("ABORTED.");
+    }
+
+    @Override
+    public void ended(Process process, int value) {
+        //System.out.println("Exit(" + value + ")");
+    }
+
+    @Override
+    public void error(Process process, Throwable th) {
+        //System.out.println("ERROR: " + th.getCause());
     }
 
     @Override
@@ -334,23 +343,14 @@ class ConsoleDisplay implements ConsoleView {
     }
 
     @Override
-    public void ended(Process process, int value) {
-        //System.out.println("EXITED: (" + value + ")");
-    }
-
-    @Override
-    public void error(Process process, Throwable th) {
-        //System.out.println("ERROR: " + th.getCause());
-    }
-
-    /**
-     * JTextComponent Helper Methods
-     */
     public void clear() {
         display.setText("");
         promptOffset = tempOffset = 0;
     }
 
+    /**
+     * JTextComponent Helper Methods
+     */
     public void update(final String text) {
         appendText(text);
     }
@@ -434,20 +434,21 @@ class ConsoleDisplay implements ConsoleView {
     }
 }
 
-interface CommandProcessor {
-
-    public void execute(String command) throws ExecutionException;
-}
-
 interface ConsoleView {
-
-    public void started(Process process);
-
-    public void aborted(Process process, String line);
 
     public void stdout(Process process, String line);
 
     public void stderr(Process process, String line);
+
+    public void clear();
+}
+
+
+interface ProgressListener {
+
+    public void started(Process process);
+
+    public void aborted(Process process, String line);
 
     public void ended(Process process, int value);
 
@@ -455,4 +456,9 @@ interface ConsoleView {
 }
 
 interface ChildProcess {
+}
+
+interface CommandProcessor {
+
+    public void execute(String command) throws ExecutionException;
 }
