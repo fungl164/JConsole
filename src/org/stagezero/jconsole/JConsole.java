@@ -65,6 +65,11 @@ public class JConsole implements CommandProcessor {
         history = new CommandHistory(MAX);
     }
 
+    @Override
+    public CommandHistory history(){
+        return history;
+    }
+    
     public ConsoleDisplay display() {
         return view;
     }
@@ -73,11 +78,6 @@ public class JConsole implements CommandProcessor {
         return view;
     }
 
-    @Override
-    public CommandHistory history(){
-        return history;
-    }
-    
     @Override
     public void execute(String command) throws ExecutionException {
         if (command == null) {
