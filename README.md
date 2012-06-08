@@ -36,3 +36,7 @@ Feel free to send feedback and/or contribute...
 Architecture
 -------------------------------------
 ![JConsole Architecture](https://github.com/fungl164/JConsole/blob/master/Arch%20Diagram.png?raw=true "JConsole Architecture")
+
+Tools
+-------------------------------------
+Ruby and Rails - Netbeans plugin - http://plugins.netbeans.org/plugin/38549
