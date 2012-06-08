@@ -35,8 +35,8 @@ import javax.swing.text.JTextComponent;
  * JConsole - An ultra light-weight Java Console application ------------
  *
  * This is a general-purpose system console app built primarily so I wouldn't 
- * have to leave Netbeans in order to play NodeJS, Ruby on Rails (RoR) and the
- * Play Framework while on the Windows platform.  
+ * have to leave Netbeans in order to play with NodeJS, Ruby on Rails (RoR) and 
+ * the Play Framework while on the Windows platform.  
  * 
  * JConsole is very light-weight and can be easily embedded into any app.
  * 
