@@ -51,56 +51,41 @@ import javax.swing.text.JTextComponent;
  * @author Luis Fung <fungl164@hotmail.com> - 06/06/2012
  *
  */
-public class JConsole {
+public class JConsole implements CommandProcessor {
 
     public static final String VERSION = "v0.1";
     private static final int MAX = 20;
     private ConsoleDisplay view;
     private CmdLineProcessor shell;
-    private String[] history;
-    int last, prev;
+    private CommandHistory history;
+//    int last, prev;
 
     public JConsole(JTextComponent display) throws IOException {
         view = new ConsoleDisplay(this, display);
-        shell = new CmdLineProcessor(this);
-        history = new String[MAX];
-        last = 0;
+        shell = new CmdLineProcessor(this); 
+        history = new CommandHistory(MAX);
     }
 
-    public ConsoleDisplay getDisplay() {
+    public ConsoleDisplay display() {
         return view;
     }
 
-    public ProgressListener getProgressListener() {
+    public ProgressListener progressListener() {
         return view;
     }
 
-    public String getCurrentCommand() {
-        return history[last];
+    @Override
+    public CommandHistory history(){
+        return history;
     }
-
-    public String getPreviousCommand() {
-        return history[check(--prev)];
-    }
-
-    public String getNextCommand() {
-        return history[check(++prev)];
-    }
-
-    public int check(int prev) {
-        int mod = prev % history.length;
-        return mod < 0 ? mod + history.length : mod;
-    }
-
+    
+    @Override
     public void execute(String command) throws ExecutionException {
         if (command == null) {
             return;
         }
         shell.execute(command);
-
-        history[last] = command;
-        last = (last + 1) % MAX;
-        prev = last;
+        history.update(command);
     }
 
     public void close() {
@@ -120,7 +105,43 @@ public class JConsole {
     }
 }
 
-class CmdLineProcessor implements CommandProcessor {
+class CommandHistory {
+
+    private String[] history;
+    int last, prev;
+
+    public CommandHistory(int max) {
+        this.history = new String[max];
+    }
+
+    public void update(String command) {
+        if (command == null) {
+            return;
+        }
+        history[last] = command;
+        last = (last + 1) % history.length;
+        prev = last;
+    }
+
+    public String getCurrent() {
+        return history[last];
+    }
+
+    public String getPrevious() {
+        return history[check(--prev)];
+    }
+
+    public String getNext() {
+        return history[check(++prev)];
+    }
+
+    public int check(int prev) {
+        int mod = prev % history.length;
+        return mod < 0 ? mod + history.length : mod;
+    }
+}
+
+class CmdLineProcessor  {
 
     public static final String SHELL = "cmd", PARAMS = "/k";
     private ProcessBuilder builder;
@@ -130,11 +151,10 @@ class CmdLineProcessor implements CommandProcessor {
         builder = new ProcessBuilder(SHELL, PARAMS);
         builder.redirectErrorStream(true);
 
-        proc = new ForkedProcess(builder.start(), console.getProgressListener(), console.getDisplay());
+        proc = new ForkedProcess(builder.start(), console.progressListener(), console.display());
         proc.execute();
     }
-
-    @Override
+    
     public void execute(String command) throws ExecutionException {
         proc.execute(command);
     }
@@ -236,7 +256,7 @@ class ConsoleDisplay implements ConsoleView, ProgressListener, InputDetector {
     int promptOffset, tempOffset;
     boolean executing;
 
-    public ConsoleDisplay(final JConsole console, JTextComponent disp) {
+    public ConsoleDisplay(final CommandProcessor commandProcessor, JTextComponent disp) {
         this.display = disp;
         this.doc = display.getDocument();
         this.actionkeymapper = new HashMap<Action, ActionListener>();
@@ -252,11 +272,11 @@ class ConsoleDisplay implements ConsoleView, ProgressListener, InputDetector {
             }
 
             @Override
-            public void keyPressed(KeyEvent e) { //Ignore
+            public void keyPressed(KeyEvent e) { //Safely Ignore
             }
 
             @Override
-            public void keyReleased(KeyEvent e) { //Ignore
+            public void keyReleased(KeyEvent e) { //Safely Ignore
             }
         });
 
@@ -266,7 +286,7 @@ class ConsoleDisplay implements ConsoleView, ProgressListener, InputDetector {
 
             @Override
             public void actionPerformed(ActionEvent e) {
-                String prev = console.getPreviousCommand();
+                String prev = commandProcessor.history().getPrevious();
                 if (prev == null) {
                     return;
                 }
@@ -279,7 +299,7 @@ class ConsoleDisplay implements ConsoleView, ProgressListener, InputDetector {
 
             @Override
             public void actionPerformed(ActionEvent e) {
-                String next = console.getNextCommand();
+                String next = commandProcessor.history().getNext();
                 if (next == null) {
                     return;
                 }
@@ -294,7 +314,7 @@ class ConsoleDisplay implements ConsoleView, ProgressListener, InputDetector {
             public void actionPerformed(ActionEvent e) {
                 try {
                     promptOffset -= tempOffset;
-                    console.execute(getText());
+                    commandProcessor.execute(getText());
                     tempOffset = 0;
                 } catch (ExecutionException ex) {
                     //Logger.getLogger(ConsoleDisplay.class.getName()).log(Level.SEVERE, null, ex);
@@ -468,6 +488,8 @@ interface ChildProcess {
 }
 
 interface CommandProcessor {
+
+    public CommandHistory history();
 
     public void execute(String command) throws ExecutionException;
 }
