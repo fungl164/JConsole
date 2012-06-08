@@ -28,7 +28,7 @@ extended to use other shells besides cmd.exe (e.g. /bin/bash).
 
 v0.1 - 06/06/2012
 - Not tested on OSX or Linux. 
-- Currently uses cmd.exe as shell (see CmdLineProcessor class below) 
+- Currently uses cmd.exe as the default shell
 - Does not yet handle CNTRL+Z events to kill runaway scripts
 - Probably has some bugs, so
 
