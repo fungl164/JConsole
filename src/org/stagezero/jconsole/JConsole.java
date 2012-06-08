@@ -88,6 +88,7 @@ public class JConsole implements CommandProcessor {
     }
 
     public void close() {
+        view.clear();
         shell.quit();
     }
 
